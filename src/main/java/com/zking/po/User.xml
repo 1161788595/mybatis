@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test">
+    <select id="selectAll" resultType="com.zking.po.User">
+        SELECT * from USER
+    </select>
+
+    <select id="selectquery" resultType="com.zking.po.User" parameterType="java.lang.Integer">
+
+        SELECT  *  FROM  USER  WHERE  id=#{id}
+    </select>
+
+    <select id="selectquery2" resultType="com.zking.po.User" parameterType="java.lang.String">
+        SELECT  *  FROM  USER  WHERE  username like '%' #{ss} '%'
+    </select>
+
+    <select id="selectquery3" resultType="com.zking.po.User" parameterType="java.lang.String">
+        SELECT  *  FROM  USER  WHERE  username like '%${value}%'
+    </select>
+    
+    <insert id="insertuser" parameterType="com.zking.po.User">
+<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+    SELECT  LAST_INSERT_ID();
+</selectKey>
+        INSERT  INTO  USER (username,userpwd,usersex) VALUES (#{username},#{userpwd},#{usersex})
+    </insert>
+ <insert id="inser22" parameterType="com.zking.po.User">
+    <selectKey keyProperty="uid" resultType="String" order="BEFORE">
+        SELECT uuid();
+    </selectKey>
+    INSERT  INTO  USER (username,userpwd,usersex,uid)VALUES (#{username},#{userpwd},#{usersex},#{uid})
+ </insert>
+
+
+    <update id="updateall" parameterType="com.zking.po.User" >
+        UPDATE  USER  SET  username=#{username},userpwd=#{userpwd},usersex=#{usersex} WHERE  id=#{id}
+    </update>
+
+    <delete id="deleteid" parameterType="java.lang.Integer">
+        DELETE  FROM USER  where id=#{id}
+    </delete>
+
+    <select id="query" parameterType="java.lang.String" resultType="com.zking.po.User" >
+        SELECT * FROM USER where username LIKE  '%${value}%' LIMIT  0,3   <!--startPos开始页 ， pageSize每页显示的记录条数-->
+    </select>
+
+    <select id="querys" resultType="int" parameterType="String">
+         select count(*) from USER where username LIKE  '%${value}%'
+    </select>
+
+</mapper>
